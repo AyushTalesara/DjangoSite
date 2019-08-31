@@ -1,0 +1,10 @@
+{% extends 'music/base.html' %} 
+{% block title %}Add a New Album{% endblock %} 
+{% block albums_active %}active{% endblock %} 
+{% block body %} 
+<form action="" enctype="multipart/form-data" method="post">
+{% csrf_token %} 
+{{ form.as_p }} 
+<button type="submit">Submit</button> 
+</form> 
+{% endblock %}
