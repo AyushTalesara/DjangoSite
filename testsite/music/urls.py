@@ -3,6 +3,9 @@ from . import views
 app_name='music'
 
 urlpatterns = [
+
+    url(r'^signup/$', views.signup,name='signup'),
+
     url(r'^$', views.IndexView.as_view(),name='index'),
     url(r'^register/$', views.UserFormView.as_view(),name='register'),
     url(r'^(?P<pk>[0-9]+)/$',views.DetailView.as_view(),name='detail'),
@@ -12,6 +15,8 @@ urlpatterns = [
     url(r'album/(?P<pk>[0-9]+)/$',views.AlbumUpdate.as_view(),name='album-update'),
 
     url(r'album/(?P<pk>[0-9]+)/delete/$',views.AlbumDelete.as_view(),name='album-delete'),
+    url(r'album/(?P<album_id>[0-9]+)/deletealbum/$',views.deletealbum,name='deletealbum'),
+
     
 
 

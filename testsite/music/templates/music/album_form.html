@@ -2,9 +2,12 @@
 {% block title %}Add a New Album{% endblock %} 
 {% block albums_active %}active{% endblock %} 
 {% block body %} 
+<div class ="container">
+<h1>New Album</h1>
 <form action="" enctype="multipart/form-data" method="post">
 {% csrf_token %} 
 {{ form.as_p }} 
 <button type="submit">Submit</button> 
 </form> 
+</div>
 {% endblock %}

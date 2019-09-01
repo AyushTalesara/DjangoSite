@@ -28,7 +28,8 @@ from django.urls import reverse_lazy ,reverse
 from django.views.generic import View
 from django.views.generic.edit import CreateView,UpdateView,DeleteView
 from .forms import UserForm
-
+def signup(request):
+    return render(request,'music/signup.html')
 class IndexView(generic.ListView):
     template_name='music/index.html'
     context_object_name="all_albums"#is used to overwrite the object_list (that displays all the objects)  
@@ -54,6 +55,9 @@ class AlbumUpdate(UpdateView):
 class AlbumDelete(DeleteView):
     model=Album
     success_url = reverse_lazy('music:index')
+def deletealbum(request,album_id):
+    Album.objects.filter(id=album_id).delete()
+    return redirect('music:index')
 
 
 class UserFormView(View):
@@ -81,3 +85,31 @@ class UserFormView(View):
                     return redirect('music:index')
             
         return render(request,self.template_name,{'form': form})
+'''
+This is based on function
+def UserFormView(request):
+    form_class= UserForm
+    template_name ='music/registration_form.html'
+
+    if request.method=='GET' :
+        form = form_class(None)
+        return render(request,template_name,{'form': form})
+
+    if request.method == 'POST' :
+        form = form_class(request.POST)
+
+        if form.is_valid():
+            user  =form.save(commit=False)
+            username= form.cleaned_data['username']
+            password =form.cleaned_data['password']
+            user.set_password(password)
+            user.save()
+
+            user = authenticate(username=username,password =password)
+            if user is not None:
+                if user.is_active:
+                    login(request,user)
+                    return redirect('music:index')
+            
+        return render(request,template_name,{'form': form})
+'''
