@@ -23,19 +23,27 @@
                             <!-- View Details -->
                             <a href="{% url 'music:detail' album.id %}" class="btn btn-primary btn-sm" role="button">View Details</a>
 
-                            <!-- Delete Album This is post method -->
-                            <form action="{% url 'music:album-delete' album.id %}" method="post" style="display: inline;">
+                            <!-- Delete Album This is post method  (if you want no confirmation them use GET-->
+                            <form action="{% url 'music:album-delete' album.id %}" method="POST" style="display: inline;">
                                 {% csrf_token %}
                                 <!--<input type="hidden" name="album_id" value="{{ album.id }}" /> -->
                                 <button type="submit" class="btn btn-default btn-sm">
                                     <span class="glyphicon glyphicon-trash"></span>
                                 </button>
                             </form>
+                            <form action="{% url 'music:album-update' album.id %}" method="GET" style="display: inline;">
+                                {% csrf_token %}
+                                <!--<input type="hidden" name="album_id" value="{{ album.id }}" /> -->
+                                <button type="submit" class="btn btn-default btn-sm">
+                                    <span class="glyphicon glyphicon-edit"></span>
+                                </button>
+                            </form>
                             
-                            <!-- This is my get method -->
+                            <!-- This is my get method 
                             <a href="{% url 'music:deletealbum' album.id %}" class="btn btn-default btn-sm "  style="display: inline;" role="button">
                                 <span class="glyphicon glyphicon-trash"></span>
                             </a>
+                            -->
 
                             <!-- Favorite Album -->
                             <a href="#" class="btn btn-default btn-sm btn-favorite">

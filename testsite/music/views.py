@@ -21,13 +21,13 @@ def detail(request,album_id):
 only when you want to use functions 
 '''
 from django.views import generic
-from .models import Album
+from .models import Album,Song
 from django.shortcuts import render,redirect
 from django.contrib.auth import authenticate, login
 from django.urls import reverse_lazy ,reverse
 from django.views.generic import View
 from django.views.generic.edit import CreateView,UpdateView,DeleteView
-from .forms import UserForm
+from .forms import UserForm,songform
 def signup(request):
     return render(request,'music/signup.html')
 class IndexView(generic.ListView):
@@ -48,16 +48,36 @@ class AlbumCreate(CreateView):
     model= Album
     fields=['artist','album_title','genre','album_logo']
 
+def SongCreate(request,album_id):
+    form_class =songform
+    template_name ='music/song_form.html'
+    if request.method=="GET":
+        form =form_class(None)
+        return render(request,template_name,{"form": form})
+    if request.method =="POST":
+        form = form_class(request.POST)
+        if form.is_valid():
+            song=form.save(commit=False)
+            song_title=form.cleaned_data['song_title']
+            file_type=form.cleaned_data['file_type']
+            song.album=Album.objects.get(id=album_id)
+            song.save()
+            return redirect('music:detail' ,album_id)
+            
 class AlbumUpdate(UpdateView):
     model= Album
     fields=['artist','album_title','genre','album_logo']
+    template_name_suffix = '_update_form'#cause default is _form suffix (album_form)
 
 class AlbumDelete(DeleteView):
     model=Album
     success_url = reverse_lazy('music:index')
+
+
 def deletealbum(request,album_id):
     Album.objects.filter(id=album_id).delete()
     return redirect('music:index')
+#def addsong(request,album_id)
 
 
 class UserFormView(View):
