@@ -23,11 +23,13 @@ only when you want to use functions
 from django.views import generic
 from .models import Album,Song
 from django.shortcuts import render,redirect
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login,logout
 from django.urls import reverse_lazy ,reverse
 from django.views.generic import View
 from django.views.generic.edit import CreateView,UpdateView,DeleteView
-from .forms import UserForm,songform
+from .forms import UserForm,songform,LoginForm
+from django.contrib.auth.forms import AuthenticationForm
+import subprocess,os
 def signup(request):
     return render(request,'music/signup.html')
 class IndexView(generic.ListView):
@@ -48,6 +50,7 @@ class AlbumCreate(CreateView):
     model= Album
     fields=['artist','album_title','genre','album_logo']
 
+
 def SongCreate(request,album_id):
     form_class =songform
     template_name ='music/song_form.html'
@@ -62,6 +65,8 @@ def SongCreate(request,album_id):
             file_type=form.cleaned_data['file_type']
             song.album=Album.objects.get(id=album_id)
             song.save()
+            #r=subprocess.call(['bash','/home/ayush/test.sh'])This was just a test to execute subprocess
+            #t=subprocess.call([ 'mv','/home/ayush/Documents/django/testsite/fuckit.txt','/home/ayush'])
             return redirect('music:detail' ,album_id)
             
 class AlbumUpdate(UpdateView):
@@ -78,8 +83,24 @@ def deletealbum(request,album_id):
     Album.objects.filter(id=album_id).delete()
     return redirect('music:index')
 #def addsong(request,album_id)
-
-
+def my_logout(request):
+    logout(request)
+    return redirect('music:register')
+def my_login(request):
+    template_name='music/login.html'
+    if request.method=="POST":
+        form1 = AuthenticationForm(data=request.POST)
+        if form1.is_valid():
+            username= form1.cleaned_data['username']
+            password =form1.cleaned_data['password']
+            a=authenticate(username=username,password=password )
+            if a is not None:
+                login(request,a)
+                return redirect('music:index')
+    else:
+        form1=AuthenticationForm(None)
+    
+    return render(request,template_name,{"form":form1})
 class UserFormView(View):
     form_class= UserForm
     template_name ='music/registration_form.html'

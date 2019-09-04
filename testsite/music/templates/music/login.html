@@ -1,0 +1,14 @@
+{% extends 'music/base.html' %} 
+{% block title %}Register{% endblock %} 
+{% block albums_active %}active{% endblock %} 
+{% block body %} 
+<div class ="container">
+<h1>Log In</h1>
+<form action="" enctype="multipart/form-data" method="POST">
+{% csrf_token %} 
+{{ form.as_p }} 
+<button type="submit">Submit</button> 
+<p class="message">Not registered? <a href="{% url 'music:register' %}">Create an account</a></p>
+</form> 
+</div>
+{% endblock %}  

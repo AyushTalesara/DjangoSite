@@ -8,6 +8,7 @@ urlpatterns = [
 
     url(r'^$', views.IndexView.as_view(),name='index'),
     url(r'^register/$', views.UserFormView.as_view(),name='register'),
+    url(r'^login/$', views.my_login,name='my_login'),
     url(r'^(?P<pk>[0-9]+)/$',views.DetailView.as_view(),name='detail'),
     #music/album/add/
     url(r'album/add/$',views.AlbumCreate.as_view(),name='album-add'),
@@ -17,6 +18,7 @@ urlpatterns = [
 
     url(r'album/(?P<pk>[0-9]+)/delete/$',views.AlbumDelete.as_view(),name='album-delete'),
     url(r'album/(?P<album_id>[0-9]+)/deletealbum/$',views.deletealbum,name='deletealbum'),
+    url(r'^logout/$', views.my_logout,name='my_logout'),
 
     
 
