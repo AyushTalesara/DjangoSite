@@ -67,7 +67,7 @@ def SongCreate(request,album_id):
             song.save()
             #r=subprocess.call(['bash','/home/ayush/test.sh'])This was just a test to execute subprocess
             #t=subprocess.call([ 'mv','/home/ayush/Documents/django/testsite/fuckit.txt','/home/ayush'])
-            return redirect('music:detail' ,album_id)
+            return redirect('music:detail' ,album_id)#reverse can also be used 
             
 class AlbumUpdate(UpdateView):
     model= Album
